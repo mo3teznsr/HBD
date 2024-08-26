@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  firstName String
+  lastName  String
+  password  String
+  role      Role @default(USER)
+  companyId Int?
+  company   Company? @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lookup {
+  id        Int      @id @default(autoincrement())
+  name      String
+  lookupItems LookupItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LookupItem {
+  id        Int      @id @default(autoincrement())
+  name      String
+  lookupId  Int
+  lookup    Lookup   @relation(fields: [lookupId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+}
+
+model Company {
+  id        Int        @id @default(autoincrement())
+  name      Json
+  address   String?
+  users     User[]
+  employees Employee[]
+  payments  Payment[]
+  orders    Order[]
+  city      String?
+  area      String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Employee {
+  id        Int      @id @default(autoincrement())
+  name      String
+  position  String?
+  companyId Int
+  company   Company  @relation(fields: [companyId], references: [id])
+  families  Family[]
+  order    OrderEmployee[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Family {
+  id           Int      @id @default(autoincrement())
+  name         String
+  relationship String
+  employeeId   Int
+  employee     Employee @relation(fields: [employeeId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Order {
+  id         Int       @id @default(autoincrement())
+  companyId  Int
+  userId     Int
+  company    Company   @relation(fields: [companyId], references: [id])
+  status     OrderStatus
+  invoiceId  Int?
+  invoice    Invoice?  @relation(fields: [invoiceId], references: [id])
+  bookingId  String
+  amount     Float
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  orderEmployees OrderEmployee[]
+}
+
+
+model Payment{
+  id        Int      @id @default(autoincrement())
+  invoiceId Int
+  invoice   Invoice    @relation(fields: [invoiceId], references: [id])
+  companyId Int
+  company   Company    @relation(fields: [companyId], references: [id])
+  amount    Float
+  status    PaymentStatus
+  method    PaymentMethod
+  date      DateTime
+  reference String?
+  attachment String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderEmployee {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  employeeId Int
+  employee  Employee @relation(fields: [employeeId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invoice {
+  id        Int      @id @default(autoincrement())
+  orders     Order[]    
+  amount    Float
+  payments Payment[]
+  dueDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+enum Role {
+  USER
+  ADMIN
+  COMPANY_ADMIN
+}
+
+
+enum OrderStatus {
+  CREATED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum InvoiceStatus {
+  CREATED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  CREATED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentMethod {
+CASH
+BANK
+CARD
+}
