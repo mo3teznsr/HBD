@@ -21,7 +21,7 @@ export function useMessagesScroll(messages) {
 
   useEffect(() => {
     scrollToBottom();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [messages]);
 
   return { messagesEndRef };

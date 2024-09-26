@@ -8,6 +8,7 @@ import { NavList } from './nav-list';
 import { navSectionClasses } from '../classes';
 import { navSectionCssVars } from '../css-vars';
 import { NavUl, NavLi, Subheader } from '../styles';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -49,6 +50,8 @@ export function NavSectionVertical({
 function Group({ items, render, subheader, slotProps, enabledRootRedirect }) {
   const [open, setOpen] = useState(true);
 
+  const {t}=useTranslation()
+
   const handleToggle = useCallback(() => {
     setOpen((prev) => !prev);
   }, []);
@@ -57,7 +60,7 @@ function Group({ items, render, subheader, slotProps, enabledRootRedirect }) {
     <NavUl sx={{ gap: 'var(--nav-item-gap)' }}>
       {items.map((list) => (
         <NavList
-          key={list.title}
+          key={t(list.title)}
           data={list}
           render={render}
           depth={1}
@@ -78,7 +81,7 @@ function Group({ items, render, subheader, slotProps, enabledRootRedirect }) {
             onClick={handleToggle}
             sx={slotProps?.subheader}
           >
-            {subheader}
+            {t(subheader)}
           </Subheader>
 
           <Collapse in={open}>{renderContent}</Collapse>

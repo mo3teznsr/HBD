@@ -36,7 +36,7 @@ export function NavList({ data, render, slotProps, enabledRootRedirect, cssVars 
     if (openMenu) {
       handleCloseMenu();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [pathname]);
 
   const handleGetClientRect = useCallback(() => {

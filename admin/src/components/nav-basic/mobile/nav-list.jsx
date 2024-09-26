@@ -22,7 +22,7 @@ export function NavList({ data, render, depth, slotProps, enabledRootRedirect })
     if (!active) {
       handleCloseMenu();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [pathname]);
 
   const handleToggleMenu = useCallback(() => {

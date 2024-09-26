@@ -7,6 +7,7 @@ import { useActiveLink } from 'src/routes/hooks/use-active-link';
 import { NavItem } from './nav-item';
 import { navSectionClasses } from '../classes';
 import { NavUl, NavLi, NavCollapse } from '../styles';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +22,7 @@ export function NavList({ data, render, depth, slotProps, enabledRootRedirect })
     if (!active) {
       handleCloseMenu();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [pathname]);
 
   const handleToggleMenu = useCallback(() => {
@@ -33,7 +34,7 @@ export function NavList({ data, render, depth, slotProps, enabledRootRedirect })
   const handleCloseMenu = useCallback(() => {
     setOpenMenu(false);
   }, []);
-
+const {t}=useTranslation()
   const renderNavItem = (
     <NavItem
       render={render}
@@ -41,7 +42,7 @@ export function NavList({ data, render, depth, slotProps, enabledRootRedirect })
       path={data.path}
       icon={data.icon}
       info={data.info}
-      title={data.title}
+      title={t(data.title)}
       caption={data.caption}
       // state
       depth={depth}

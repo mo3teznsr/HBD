@@ -7,7 +7,7 @@ import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
 import { Logo } from 'src/components/logo';
-
+import { allLangs } from 'src/locales';
 import { HeaderSection } from './header-section';
 import { Searchbar } from '../components/searchbar';
 import { MenuButton } from '../components/menu-button';
@@ -18,6 +18,7 @@ import { LanguagePopover } from '../components/language-popover';
 import { ContactsPopover } from '../components/contacts-popover';
 import { WorkspacesPopover } from '../components/workspaces-popover';
 import { NotificationsDrawer } from '../components/notifications-drawer';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -73,7 +74,7 @@ export function HeaderBase({
   ...other
 }) {
   const theme = useTheme();
-
+const {t}=useTranslation("navbar")
   return (
     <HeaderSection
       sx={sx}
@@ -90,6 +91,7 @@ export function HeaderBase({
               <MenuButton
                 data-slot="menu-button"
                 onClick={onOpenNav}
+                langs={allLangs}
                 sx={{
                   mr: 1,
                   ml: -1,
@@ -131,7 +133,7 @@ export function HeaderBase({
                   color="inherit"
                   sx={{ typography: 'subtitle2' }}
                 >
-                  Need help?
+                  {("Need help?")}
                 </Link>
               )}
 

@@ -16,6 +16,7 @@ const ICONS = {
   chat: icon('ic-chat'),
   mail: icon('ic-mail'),
   user: icon('ic-user'),
+  person: icon('ic-person'),
   file: icon('ic-file'),
   lock: icon('ic-lock'),
   tour: icon('ic-tour'),
@@ -48,7 +49,7 @@ export const navData = [
   {
     subheader: 'Overview',
     items: [
-      { title: 'App', path: paths.dashboard.root, icon: ICONS.dashboard },
+      { title: 'Dashboard', path: paths.dashboard.root, icon: ICONS.dashboard },
       // { title: 'Ecommerce', path: paths.dashboard.general.ecommerce, icon: ICONS.ecommerce },
       // { title: 'Analytics', path: paths.dashboard.general.analytics, icon: ICONS.analytics },
       // { title: 'Banking', path: paths.dashboard.general.banking, icon: ICONS.banking },
@@ -63,19 +64,7 @@ export const navData = [
   {
     subheader: 'Management',
     items: [
-      {
-        title: 'User',
-        path: paths.dashboard.user.root,
-        icon: ICONS.user,
-        children: [
-          { title: 'Profile', path: paths.dashboard.user.root },
-          { title: 'Cards', path: paths.dashboard.user.cards },
-          { title: 'List', path: paths.dashboard.user.list },
-          { title: 'Create', path: paths.dashboard.user.new },
-          { title: 'Edit', path: paths.dashboard.user.demo.edit },
-          { title: 'Account', path: paths.dashboard.user.account },
-        ],
-      },
+      
       // {
       //   title: 'Product',
       //   path: paths.dashboard.product.root,
@@ -88,7 +77,7 @@ export const navData = [
       //   ],
       // },
       {
-        title: 'Order',
+        title: 'Orders',
         path: paths.dashboard.order.root,
         icon: ICONS.booking,
         children: [
@@ -98,7 +87,7 @@ export const navData = [
         ],
       },
       {
-        title: 'Invoice',
+        title: 'Invoices',
         path: paths.dashboard.invoice.root,
         icon: ICONS.invoice,
         children: [
@@ -106,6 +95,32 @@ export const navData = [
           // { title: 'Details', path: paths.dashboard.invoice.demo.details },
           // { title: 'Create', path: paths.dashboard.invoice.new },
           // { title: 'Edit', path: paths.dashboard.invoice.demo.edit },
+        ],
+      },
+      {
+        title: 'Users',
+        path: paths.dashboard.user.root,
+        icon: ICONS.user,
+        children: [
+          // { title: 'Profile', path: paths.dashboard.user.root },
+          // { title: 'Cards', path: paths.dashboard.user.cards },
+          { title: 'List', path: paths.dashboard.user.list },
+          // { title: 'Create', path: paths.dashboard.user.new },
+          // { title: 'Edit', path: paths.dashboard.user.demo.edit },
+          // { title: 'Account', path: paths.dashboard.user.account },
+        ],
+      },
+      {
+        title: 'Staff',
+        path: paths.dashboard.staff.root,
+        icon: ICONS.user,
+        children: [
+          // { title: 'Profile', path: paths.dashboard.user.root },
+          // { title: 'Cards', path: paths.dashboard.user.cards },
+          { title: 'List', path: paths.dashboard.user.list },
+          // { title: 'Create', path: paths.dashboard.user.new },
+          // { title: 'Edit', path: paths.dashboard.user.demo.edit },
+          // { title: 'Account', path: paths.dashboard.user.account },
         ],
       },
       // {

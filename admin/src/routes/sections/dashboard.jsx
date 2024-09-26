@@ -7,6 +7,7 @@ import { DashboardLayout } from 'src/layouts/dashboard';
 import { LoadingScreen } from 'src/components/loading-screen';
 
 import { AuthGuard } from 'src/auth/guard';
+import StaffListPage from 'src/pages/dashboard/staff/list';
 
 // ----------------------------------------------------------------------
 
@@ -116,6 +117,16 @@ export const dashboardRoutes = [
         children: [
           { element: <OrderListPage />, index: true },
           { path: 'list', element: <OrderListPage /> },
+          { path: ':id', element: <OrderDetailsPage /> },
+          { path: 'new', element: <OrderCreatePage /> },
+          { path: ':id/edit', element: <OrderCreatePage /> },
+        ],
+      },
+      {
+        path: 'staff',
+        children: [
+          { element: <StaffListPage />, index: true },
+          { path: 'list', element: <StaffListPage /> },
           { path: ':id', element: <OrderDetailsPage /> },
           { path: 'new', element: <OrderCreatePage /> },
           { path: ':id/edit', element: <OrderCreatePage /> },

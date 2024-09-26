@@ -44,25 +44,13 @@ import { OrderTableRow } from '../order-table-row';
 import { OrderTableToolbar } from '../order-table-toolbar';
 import { OrderTableFiltersResult } from '../order-table-filters-result';
 import { RouterLink } from 'src/routes/components';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...ORDER_STATUS_OPTIONS];
 
-const TABLE_HEAD = [
-  { id: 'orderNumber', label: 'Order', width: 88 },
-  { id: 'name', label: 'Customer' },
-  { id: 'createdAt', label: 'Date', width: 140 },
-  {
-    id: 'totalQuantity',
-    label: 'Items',
-    width: 120,
-    align: 'center',
-  },
-  { id: 'totalAmount', label: 'Price', width: 140 },
-  { id: 'status', label: 'Status', width: 110 },
-  { id: '', width: 88 },
-];
+
 
 // ----------------------------------------------------------------------
 
@@ -74,7 +62,21 @@ export function OrderListView() {
   const confirm = useBoolean();
 
   const [tableData, setTableData] = useState(_orders);
-
+  const {t}=useTranslation()
+  const TABLE_HEAD = [
+    { id: 'orderNumber', label: t('Order'), width: 88 },
+    { id: 'name', label: t('Staff') },
+    { id: 'createdAt', label: t('Date'), width: 140 },
+    {
+      id: 'totalQuantity',
+      label: t('Items'),
+      width: 120,
+      align: 'center',
+    },
+    { id: 'totalAmount', label: t('Price'), width: 140 },
+    { id: 'status', label: t('Status'), width: 110 },
+    { id: '', width: 88 },
+  ];
   const filters = useSetState({
     name: '',
     status: 'all',
@@ -145,11 +147,11 @@ export function OrderListView() {
     <>
       <DashboardContent>
         <CustomBreadcrumbs
-          heading="List"
+          heading={t("Orders")}
           links={[
-            { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Order', href: paths.dashboard.order.root },
-            { name: 'List' },
+            { name: t('Dashboard'), href: paths.dashboard.root },
+            { name: t('Orders'), href: paths.dashboard.order.root },
+            { name: t('List' )},
           ]}
           action={
             <Button
@@ -158,7 +160,7 @@ export function OrderListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New Order
+              {t("New Order")}
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}
@@ -179,7 +181,7 @@ export function OrderListView() {
                 key={tab.value}
                 iconPosition="end"
                 value={tab.value}
-                label={tab.label}
+                label={t(tab.label)}
                 icon={
                   <Label
                     variant={
@@ -229,7 +231,7 @@ export function OrderListView() {
                 )
               }
               action={
-                <Tooltip title="Delete">
+                <Tooltip title={t("Delete")}>
                   <IconButton color="primary" onClick={confirm.onTrue}>
                     <Iconify icon="solar:trash-bin-trash-bold" />
                   </IconButton>

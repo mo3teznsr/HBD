@@ -1,5 +1,5 @@
 import { z as zod } from 'zod';
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -22,6 +22,9 @@ import { InvoiceNewEditDetails } from '../invoice/invoice-new-edit-details';
 import { InvoiceNewEditAddress } from '../invoice//invoice-new-edit-address';
 import { InvoiceNewEditStatusDate } from '../invoice//invoice-new-edit-status-date';
 import { Button, InputAdornment, MenuItem } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { getAirports } from 'src/services/lookups';
+import { getServices } from 'src/services/service';
 
 export const NewInvoiceSchema = zod
   .object({
@@ -57,6 +60,11 @@ export const NewInvoiceSchema = zod
 
 export function OrderNewEditForm({ currentInvoice }) {
   const router = useRouter();
+  const [params,setParams]=useState({})
+
+  const handleChange=(e)=>{
+    setParams({...params,[e.target.name]:e.target.value})
+  }
 
   const loadingSave = useBoolean();
 
@@ -132,33 +140,47 @@ export function OrderNewEditForm({ currentInvoice }) {
 
   const isOneWay=useBoolean(true);
 
+  const {t}=useTranslation();
+
+  const [airports,setAirports]=useState([])
+
+  const fetchAirports=useCallback(async ()=>{
+    getAirports().then((res)=>{
+      setAirports(res.data)
+    })
+  })
+
+  useEffect(()=>{
+    fetchAirports()
+  },[])
+
   return (
     <Form methods={methods}>
         <div className='bg-white p-4 mb-4 rounded-2xl'>
         <div className='flex justify-between items-center gap-8 mb-4'>
 
             <div className='bg-slate-50 flex items-center font-medium py-3 px-4 rounded-full gap-2'>
-                <div  onClick={isOneWay.onTrue} className={`px-6 py-4 rounded-full cursor-pointer ${isOneWay.value&&'bg-white'}`}>One Way</div>
-                <div onClick={isOneWay.onFalse} className={`px-6 py-4 rounded-full cursor-pointer ${!isOneWay.value&&'bg-white'}`}>Round Trip</div>
+                <div  onClick={()=>setParams({isOneWay:true})} className={`px-6 py-4 rounded-full cursor-pointer ${params.isOneWay&&'bg-white'}`}>{t("One Way")}</div>
+                <div onClick={()=>setParams({isOneWay:false})} className={`px-6 py-4 rounded-full cursor-pointer ${!params.isOneWay&&'bg-white'}`}>{t("Round Trip")}</div>
             </div>
 
             <div className='flex-1 flex gap-2'>
-                <Field.Select name="class" label="Class">
-                    <MenuItem value="economy">Economy</MenuItem>
-                    <MenuItem value="business">Business</MenuItem>
-                    <MenuItem value="first">First</MenuItem>
+                <Field.Select name="class" label={t("Class")}  onChange={handleChange}>
+                    <MenuItem value="ECONOMY">{t("Economy")}</MenuItem>
+                    <MenuItem value="BUSINESS">{t("Business")}</MenuItem>
+                    <MenuItem value="FIRST">{t("First")}</MenuItem>
                 </Field.Select>
-                <Field.Select name="adults" label="adults">
+                <Field.Select name="adults" label={t("adults")} onChange={handleChange}>
                     {Array.from({ length: 10 }, (_, i) => (
                       <MenuItem value={i } key={i}>{i }</MenuItem>
                     ))}
                 </Field.Select>
-                <Field.Select name="children" label="chilren">
+                <Field.Select name="children" onChange={handleChange} label={t("children")}>
                 {Array.from({ length: 10 }, (_, i) => (
                       <MenuItem value={i } key={i}>{i }</MenuItem>
                     ))}
                 </Field.Select>
-                <Field.Select name="infants" label="infants">
+                <Field.Select name="infants" onChange={handleChange} label={t("infants")}>
                 {Array.from({ length: 2 }, (_, i) => (
                       <MenuItem value={i } key={i}>{i }</MenuItem>
                     ))}
@@ -167,7 +189,8 @@ export function OrderNewEditForm({ currentInvoice }) {
 
         </div>
         <div className='flex items-center  gap-3 mb-4'>
-            <Field.Text name="from" InputProps={{
+          
+            <Field.Text name="from" onChange={handleChange} InputProps={{
           startAdornment: (
             <InputAdornment position="start">
               <IconPlaneDeparture />
@@ -178,8 +201,8 @@ export function OrderNewEditForm({ currentInvoice }) {
               <IconSearch />
             </InputAdornment>
           ),
-        }} label="From"></Field.Text>
-            <Field.Text
+        }} label={t("From")}></Field.Text>
+            <Field.Text onChange={handleChange}
              InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -192,21 +215,21 @@ export function OrderNewEditForm({ currentInvoice }) {
                   </InputAdornment>
                 ),
               }}
-             name="to" label="To"></Field.Text>
+             name="to" label={t("To")}></Field.Text>
 
-             <Field.DatePicker name="dateFrom" label="Date From"></Field.DatePicker>
+             <Field.DatePicker name="dateFrom" label={t("Date From")}></Field.DatePicker>
 
-             {!isOneWay.value && <Field.DatePicker name="dateTo" label="Date To"></Field.DatePicker>}
+             {!params.isOneWay && <Field.DatePicker name="dateTo" label={t("Date To")}></Field.DatePicker>}
 
-             <Button variant="contained" className=' h-10 '> search</Button>
+             <Button variant="contained" className=' h-10 '> {t("search")}</Button>
 
         </div>
 
         </div>
       <Card>
-        {/* <InvoiceNewEditAddress /> */}
+        <InvoiceNewEditAddress />
 
-        {/* <InvoiceNewEditStatusDate /> */}
+        <InvoiceNewEditStatusDate />
 
         <InvoiceNewEditDetails />
       </Card>
@@ -219,7 +242,7 @@ export function OrderNewEditForm({ currentInvoice }) {
           loading={loadingSave.value && isSubmitting}
           onClick={handleSaveAsDraft}
         >
-          Save as draft
+          {t("Save as draft")}
         </LoadingButton>
 
         <LoadingButton
@@ -228,7 +251,7 @@ export function OrderNewEditForm({ currentInvoice }) {
           loading={loadingSend.value && isSubmitting}
           onClick={handleCreateAndSend}
         >
-          {currentInvoice ? 'Update' : 'Create'} & send
+          {currentInvoice ? t('Update') : t('Create')}
         </LoadingButton>
       </Stack>
     </Form>

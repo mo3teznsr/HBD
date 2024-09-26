@@ -14,7 +14,7 @@ export function useCountdownDate(date) {
     setNewTime();
     const interval = setInterval(setNewTime, 1000);
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, []);
 
   const setNewTime = () => {

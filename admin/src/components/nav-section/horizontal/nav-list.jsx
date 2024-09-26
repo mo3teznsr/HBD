@@ -31,7 +31,7 @@ export function NavList({ data, depth, render, cssVars, slotProps, enabledRootRe
     if (openMenu) {
       handleCloseMenu();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [pathname]);
 
   const handleOpenMenu = useCallback(() => {

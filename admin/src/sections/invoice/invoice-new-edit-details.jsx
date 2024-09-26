@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback,useState} from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
@@ -9,13 +9,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import { inputBaseClasses } from '@mui/material/InputBase';
-
 import { fCurrency } from 'src/utils/format-number';
-
 import { INVOICE_SERVICE_OPTIONS } from 'src/_mock';
-
 import { Field } from 'src/components/hook-form';
 import { Iconify } from 'src/components/iconify';
+import { useTranslation } from 'react-i18next';
+import { getServices } from 'src/services/service';
 
 // ----------------------------------------------------------------------
 
@@ -31,9 +30,24 @@ export function InvoiceNewEditDetails() {
   const subtotal = totalOnRow.reduce((acc, num) => acc + num, 0);
 
   const totalAmount = subtotal - values.discount - values.shipping + values.taxes;
+  const [services, setServices] = useState([]);
+
+  const { t ,i18n} = useTranslation();
+
+  const fetchServices =  () => {
+    getServices().then((res) => {
+
+      setServices(res.data);
+    });
+  };
+
+  useEffect(()=>(
+    fetchServices()
+  ),[])
 
   useEffect(() => {
     setValue('totalAmount', totalAmount);
+    
   }, [setValue, totalAmount]);
 
   const handleAdd = () => {
@@ -95,7 +109,6 @@ export function InvoiceNewEditDetails() {
     },
     [setValue, values.items]
   );
-
   const renderTotal = (
     <Stack
       spacing={2}
@@ -103,31 +116,31 @@ export function InvoiceNewEditDetails() {
       sx={{ mt: 3, textAlign: 'right', typography: 'body2' }}
     >
       <Stack direction="row">
-        <Box sx={{ color: 'text.secondary' }}>Subtotal</Box>
+        <Box sx={{ color: 'text.secondary' }}>{t("Subtotal")}</Box>
         <Box sx={{ width: 160, typography: 'subtitle2' }}>{fCurrency(subtotal) || '-'}</Box>
       </Stack>
 
       <Stack direction="row">
-        <Box sx={{ color: 'text.secondary' }}>Shipping</Box>
+        <Box sx={{ color: 'text.secondary' }}>{t("Shipping")}</Box>
         <Box sx={{ width: 160, ...(values.shipping && { color: 'error.main' }) }}>
           {values.shipping ? `- ${fCurrency(values.shipping)}` : '-'}
         </Box>
       </Stack>
 
       <Stack direction="row">
-        <Box sx={{ color: 'text.secondary' }}>Discount</Box>
+        <Box sx={{ color: 'text.secondary' }}>{t("Discount")}</Box>
         <Box sx={{ width: 160, ...(values.discount && { color: 'error.main' }) }}>
           {values.discount ? `- ${fCurrency(values.discount)}` : '-'}
         </Box>
       </Stack>
 
       <Stack direction="row">
-        <Box sx={{ color: 'text.secondary' }}>Taxes</Box>
+        <Box sx={{ color: 'text.secondary' }}>{t("Taxes")}</Box>
         <Box sx={{ width: 160 }}>{values.taxes ? fCurrency(values.taxes) : '-'}</Box>
       </Stack>
 
       <Stack direction="row" sx={{ typography: 'subtitle1' }}>
-        <div>Total</div>
+        <div>{t("Total")}</div>
         <Box sx={{ width: 160 }}>{fCurrency(totalAmount) || '-'}</Box>
       </Stack>
     </Stack>
@@ -136,7 +149,7 @@ export function InvoiceNewEditDetails() {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h6" sx={{ color: 'text.disabled', mb: 3 }}>
-        Details:
+        {t("Details")}:
       </Typography>
 
       <Stack divider={<Divider flexItem sx={{ borderStyle: 'dashed' }} />} spacing={3}>
@@ -146,21 +159,21 @@ export function InvoiceNewEditDetails() {
               <Field.Text
                 size="small"
                 name={`items[${index}].title`}
-                label="Title"
+                label={t("Title")}
                 InputLabelProps={{ shrink: true }}
               />
 
               <Field.Text
                 size="small"
                 name={`items[${index}].description`}
-                label="Description"
+                label={t("Description")}
                 InputLabelProps={{ shrink: true }}
               />
 
               <Field.Select
                 name={`items[${index}].service`}
                 size="small"
-                label="Service"
+                label={t("Service")}
                 InputLabelProps={{ shrink: true }}
                 sx={{ maxWidth: { md: 160 } }}
               >
@@ -169,18 +182,18 @@ export function InvoiceNewEditDetails() {
                   onClick={() => handleClearService(index)}
                   sx={{ fontStyle: 'italic', color: 'text.secondary' }}
                 >
-                  None
+                  {t("None")}
                 </MenuItem>
 
                 <Divider sx={{ borderStyle: 'dashed' }} />
 
-                {INVOICE_SERVICE_OPTIONS.map((service) => (
+                {services.map((service) => (
                   <MenuItem
                     key={service.id}
-                    value={service.name}
-                    onClick={() => handleSelectService(index, service.name)}
+                    value={`${service.id}`}
+                    onClick={() => handleSelectService(index, service.id)}
                   >
-                    {service.name}
+                    {service?.[`name_${i18n.language}`]}
                   </MenuItem>
                 ))}
               </Field.Select>
@@ -189,7 +202,7 @@ export function InvoiceNewEditDetails() {
                 size="small"
                 type="number"
                 name={`items[${index}].quantity`}
-                label="Quantity"
+                label={t("Quantity")}
                 placeholder="0"
                 onChange={(event) => handleChangeQuantity(event, index)}
                 InputLabelProps={{ shrink: true }}
@@ -200,13 +213,13 @@ export function InvoiceNewEditDetails() {
                 size="small"
                 type="number"
                 name={`items[${index}].price`}
-                label="Price"
+                label={t("Price")}
                 placeholder="0.00"
                 onChange={(event) => handleChangePrice(event, index)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Box sx={{ typography: 'subtitle2', color: 'text.disabled' }}>$</Box>
+                      <Box sx={{ typography: 'subtitle2', color: 'text.disabled' }}>{t("SAR")}</Box>
                     </InputAdornment>
                   ),
                 }}
@@ -218,14 +231,14 @@ export function InvoiceNewEditDetails() {
                 size="small"
                 type="number"
                 name={`items[${index}].total`}
-                label="Total"
+                label={t("Total")}
                 placeholder="0.00"
                 value={values.items[index].total === 0 ? '' : values.items[index].total.toFixed(2)}
                 onChange={(event) => handleChangePrice(event, index)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Box sx={{ typography: 'subtitle2', color: 'text.disabled' }}>$</Box>
+                      <Box sx={{ typography: 'subtitle2', color: 'text.disabled' }}>{t("SAR")}</Box>
                     </InputAdornment>
                   ),
                 }}
@@ -244,7 +257,7 @@ export function InvoiceNewEditDetails() {
               startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
               onClick={() => handleRemove(index)}
             >
-              Remove
+              {t("Remove")}
             </Button>
           </Stack>
         ))}
@@ -264,7 +277,7 @@ export function InvoiceNewEditDetails() {
           onClick={handleAdd}
           sx={{ flexShrink: 0 }}
         >
-          Add Item
+          {t("Add Item")}
         </Button>
 
         <Stack
@@ -273,17 +286,17 @@ export function InvoiceNewEditDetails() {
           direction={{ xs: 'column', md: 'row' }}
           sx={{ width: 1 }}
         >
-          <Field.Text
+          {/* <Field.Text
             size="small"
             label="Shipping($)"
             name="shipping"
             type="number"
             sx={{ maxWidth: { md: 120 } }}
-          />
+          /> */}
 
           <Field.Text
             size="small"
-            label="Discount($)"
+            label={t("Discount")}
             name="discount"
             type="number"
             sx={{ maxWidth: { md: 120 } }}
@@ -291,7 +304,7 @@ export function InvoiceNewEditDetails() {
 
           <Field.Text
             size="small"
-            label="Taxes(%)"
+            label={t("Taxes")}
             name="taxes"
             type="number"
             sx={{ maxWidth: { md: 120 } }}

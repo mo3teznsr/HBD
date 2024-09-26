@@ -96,7 +96,7 @@ export const Editor = forwardRef(
       if (resetValue && !content) {
         editor?.commands.clearContent();
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      
     }, [content]);
 
     useEffect(() => {

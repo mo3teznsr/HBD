@@ -22,6 +22,7 @@ import { Form, Field } from 'src/components/hook-form';
 
 import { signUp } from 'src/auth/context/jwt';
 import { useAuthContext } from 'src/auth/hooks';
+import { useTranslation } from 'react-i18next';
 
 
 // ----------------------------------------------------------------------
@@ -88,17 +89,19 @@ export function JwtSignUpView() {
     }
   });
 
+  const {t}=useTranslation()
+
   const renderHead = (
     <Stack spacing={1.5} sx={{ mb: 5 }}>
-      <Typography variant="h5">Get started absolutely free</Typography>
+      <Typography variant="h5">{t("Create Company Profile")}</Typography>
 
       <Stack direction="row" spacing={0.5}>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Already have an account?
+          {t("Already have an account?")}
         </Typography>
 
         <Link component={RouterLink} href={paths.auth.jwt.signIn} variant="subtitle2">
-          Sign in
+          {t("Sign in")}
         </Link>
       </Stack>
     </Stack>
@@ -106,31 +109,31 @@ export function JwtSignUpView() {
 
   const renderForm = (
     <Stack spacing={3}>
-      <h3 className='text-heading font-semibold text-lg'>Company information</h3>
+      <h3 className='text-heading font-semibold text-lg'>{t("Company Information")}</h3>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <Field.Text name="company.name.en" label="Comapny name (English)" InputLabelProps={{ shrink: true }} />
-        <Field.Text name="company.name.ar" label="Company name (Arabic)" InputLabelProps={{ shrink: true }} />
+        <Field.Text name="company.name.en" label={t("Comapny name (English)")} placeholder={t("Comapny name (English)")} InputLabelProps={{ shrink: true }} />
+        <Field.Text name="company.name.ar" label={t("Company name (Arabic)")} placeholder={t("Company name (Arabic)")} InputLabelProps={{ shrink: true }} />
       </Stack>
 
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <Field.Text  name="company.city" label="City" InputLabelProps={{ shrink: true }} />
-        <Field.Text name="company.area" label="Area" InputLabelProps={{ shrink: true }} />
-        <Field.Text name="company.address" label="Address" InputLabelProps={{ shrink: true }} />
+        <Field.Text  name="company.city" label={t("City")} placeholder={t("City")} InputLabelProps={{ shrink: true }} />
+        <Field.Text name="company.area" label={t("Area")} placeholder={t("Area")} InputLabelProps={{ shrink: true }} />
+        <Field.Text name="company.address" label={t("Address")} placeholder={t("Address")} InputLabelProps={{ shrink: true }} />
       </Stack>
 
-      <h3 className='text-heading font-semibold'>Company Admin User</h3>
+      <h3 className='text-heading font-semibold'>{t("Company Admin User")}</h3>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <Field.Text name="firstName" label="First name" InputLabelProps={{ shrink: true }} />
-        <Field.Text name="lastName" label="Last name" InputLabelProps={{ shrink: true }} />
+        <Field.Text name="firstName" label={t("First name")} placeholder={t("First name")} InputLabelProps={{ shrink: true }} />
+        <Field.Text name="lastName" label={t("Last name")} placeholder={t("Last name")} InputLabelProps={{ shrink: true }} />
       </Stack>
 
-      <Field.Text name="email" label="Email address" InputLabelProps={{ shrink: true }} />
+      <Field.Text name="email" label={t("Email")} placeholder={t("Email")} InputLabelProps={{ shrink: true }} />
 
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
       <Field.Text
         name="password"
-        label="Password"
-        placeholder="6+ characters"
+        label={t("Password")}
+        placeholder={t("Password")}
         type={password.value ? 'text' : 'password'}
         InputLabelProps={{ shrink: true }}
         InputProps={{
@@ -146,8 +149,8 @@ export function JwtSignUpView() {
 
 <Field.Text
         name="confirmPassword"
-        label="Password Confirmation"
-        placeholder="6+ characters"
+        label={t("Password Confirmation")}
+        placeholder={t("Password Confirmation")}
         type={password.value ? 'text' : 'password'}
         InputLabelProps={{ shrink: true }}
         InputProps={{
@@ -172,7 +175,7 @@ export function JwtSignUpView() {
         loading={isSubmitting}
         loadingIndicator="Create account..."
       >
-        Create account
+        {t("Sign Up")}
       </LoadingButton>
 
       </div>
@@ -215,7 +218,7 @@ export function JwtSignUpView() {
         {renderForm}
       </Form>
 
-      {renderTerms}
+      {/* {renderTerms} */}
     </>
   );
 }

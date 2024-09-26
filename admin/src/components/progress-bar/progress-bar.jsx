@@ -37,7 +37,7 @@ export function ProgressBar() {
     return () => {
       NProgress.done();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [pathname, mounted]);
 
   if (!mounted) {

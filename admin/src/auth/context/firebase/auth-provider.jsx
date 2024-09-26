@@ -49,7 +49,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     checkUserSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, []);
 
   // ----------------------------------------------------------------------

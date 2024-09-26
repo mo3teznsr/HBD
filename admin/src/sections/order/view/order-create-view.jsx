@@ -4,20 +4,22 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 import { OrderNewEditForm } from '../order-new-edit-form';
+import { useTranslation } from 'react-i18next';
 
 
 
 // ----------------------------------------------------------------------
 
 export function OrderCreateView() {
+  const {t}=useTranslation();
   return (
     <DashboardContent>
       <CustomBreadcrumbs
-        heading="Create a new order"
+        heading={t("Create a new order")}
         links={[
-          { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'Order', href: paths.dashboard.invoice.root },
-          { name: 'New Order' },
+          { name: t('Dashboard'), href: paths.dashboard.root },
+          { name: t('Orders'), href: paths.dashboard.invoice.root },
+          { name: t('New Order') },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}
       />

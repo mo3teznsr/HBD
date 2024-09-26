@@ -10,6 +10,7 @@ import { useTranslate } from 'src/locales';
 import { varHover } from 'src/components/animate';
 import { FlagIcon } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
+import { useSettingsContext } from 'src/components/settings';
 
 // ----------------------------------------------------------------------
 
@@ -17,10 +18,11 @@ export function LanguagePopover({ data = [], sx, ...other }) {
   const popover = usePopover();
 
   const { onChangeLang, currentLang } = useTranslate();
-
+  const settings = useSettingsContext();
   const handleChangeLang = useCallback(
     (newLang) => {
       onChangeLang(newLang);
+      settings.onUpdateField('direction', newLang === 'ar' ? 'rtl' : 'ltr')
       popover.onClose();
     },
     [onChangeLang, popover]

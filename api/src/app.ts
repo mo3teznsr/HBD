@@ -6,6 +6,10 @@ import employeeRoutes from "./routes/employee.routes";
 import orderRoutes from "./routes/order.routes";
 import invoiceRoutes from "./routes/invoice.routes";
 import authRoutes from "./routes/auth.route";
+import amdeusRoutes from "./routes/amadeus.route"
+import bookingRoutes from "./routes/booking.routes";
+import lookupRoutes from "./routes/lookup.routes";
+import serviceRoutes from "./routes/service.routes";
 // import paymentRoutes from "./routes/payment.routes";
 // import authRoutes from "./routes/auth.routes";
 
@@ -20,6 +24,10 @@ app.use("/employees", employeeRoutes);
 // app.use("/families", familyRoutes);
 app.use("/orders", orderRoutes);
 app.use("/invoices", invoiceRoutes);
+app.use('/booking',amdeusRoutes);
+app.use('/bookings', bookingRoutes);
+app.use('/lookups', lookupRoutes);
+app.use("/services",serviceRoutes)
 // app.use("/payments", paymentRoutes);
 // app.use("/auth", authRoutes);
 

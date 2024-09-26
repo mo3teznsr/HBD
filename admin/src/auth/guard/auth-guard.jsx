@@ -59,7 +59,7 @@ export function AuthGuard({ children }) {
 
   useEffect(() => {
     checkPermissions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [authenticated, loading]);
 
   if (isChecking) {

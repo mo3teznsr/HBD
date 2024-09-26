@@ -10,6 +10,7 @@ import { Section } from './section';
 import { Main, Content } from './main';
 import { HeaderBase } from '../core/header-base';
 import { LayoutSection } from '../core/layout-section';
+import { allLangs } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +28,9 @@ export function AuthSplitLayout({ sx, section, children }) {
         <HeaderBase
           disableElevation
           layoutQuery={layoutQuery}
+          data={{
+            langs: allLangs,
+          }}
           onOpenNav={mobileNavOpen.onTrue}
           slotsDisplay={{
             signIn: false,
@@ -36,8 +40,10 @@ export function AuthSplitLayout({ sx, section, children }) {
             searchbar: false,
             workspaces: false,
             menuButton: false,
-            localization: false,
+            localization: true,
             notifications: false,
+            settings: false,
+            helpLink: false,
           }}
           slots={{
             topArea: (

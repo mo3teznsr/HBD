@@ -42,7 +42,7 @@ export function NavList({ data, render, slotProps, cssVars, enabledRootRedirect 
     if (openMenu) {
       handleCloseMenu();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [pathname]);
 
   const handleGetClientRect = useCallback(() => {

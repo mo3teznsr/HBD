@@ -79,7 +79,7 @@ export function useParallax(mainApi, parallax) {
       .on('reInit', setTweenFactor)
       .on('reInit', tweenParallax)
       .on('scroll', tweenParallax);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [mainApi, tweenParallax]);
 
   return null;

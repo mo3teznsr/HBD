@@ -125,7 +125,7 @@ export function ProductListView() {
         onOpenConfirmDeleteRows={confirmRows.onTrue}
       />
     ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
     [filters.state, selectedRowIds]
   );
 

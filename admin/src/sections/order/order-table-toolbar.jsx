@@ -11,6 +11,7 @@ import { formHelperTextClasses } from '@mui/material/FormHelperText';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,8 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
     [filters, onResetPage]
   );
 
+  const {t}=useTranslation()
+
   return (
     <>
       <Stack
@@ -50,7 +53,7 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
         sx={{ p: 2.5, pr: { xs: 2.5, md: 1 } }}
       >
         <DatePicker
-          label="Start date"
+          label={t("Start date")}
           value={filters.state.startDate}
           onChange={handleFilterStartDate}
           slotProps={{ textField: { fullWidth: true } }}
@@ -58,7 +61,7 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
         />
 
         <DatePicker
-          label="End date"
+          label={t("End date")}
           value={filters.state.endDate}
           onChange={handleFilterEndDate}
           slotProps={{
@@ -82,7 +85,7 @@ export function OrderTableToolbar({ filters, onResetPage, dateError }) {
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName}
-            placeholder="Search customer or order number..."
+            placeholder={t("search")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

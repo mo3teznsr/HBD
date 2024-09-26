@@ -38,7 +38,7 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }) {
     } else {
       onOpenMobile();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [lgUp]);
 
   const renderGroup = (

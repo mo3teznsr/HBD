@@ -34,7 +34,7 @@ export function AuthCenteredLayout({ sx, children }) {
             searchbar: false,
             workspaces: false,
             menuButton: false,
-            localization: false,
+            localization: true,
             notifications: false,
           }}
           slots={{

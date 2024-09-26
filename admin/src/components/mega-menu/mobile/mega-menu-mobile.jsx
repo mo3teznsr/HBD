@@ -49,7 +49,7 @@ export function MegaMenuMobile({
     if (openDrawer) {
       handleCloseDrawer();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [pathname]);
 
   const renderButton = slots?.button ? (

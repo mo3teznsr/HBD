@@ -18,6 +18,8 @@ model User {
   company   Company? @relation(fields: [companyId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Order Order[]
 }
 
 model Lookup {
@@ -55,39 +57,61 @@ model Company {
 
 model Employee {
   id        Int      @id @default(autoincrement())
-  name      String
+  name_ar      String?
+  name_en      String?
   position  String?
   companyId Int
   company   Company  @relation(fields: [companyId], references: [id])
-  families  Family[]
-  order    OrderEmployee[]
+  image     String?
+  travelers    Traveler[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Order Order[]
 }
 
-model Family {
-  id           Int      @id @default(autoincrement())
-  name         String
-  relationship String
-  employeeId   Int
-  employee     Employee @relation(fields: [employeeId], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
+
 
 model Order {
   id         Int       @id @default(autoincrement())
   companyId  Int
   userId     Int
+  employeeId Int?
   company    Company   @relation(fields: [companyId], references: [id])
   status     OrderStatus
   invoiceId  Int?
+  user       User      @relation(fields: [userId], references: [id])
   invoice    Invoice?  @relation(fields: [invoiceId], references: [id])
-  bookingId  String
   amount     Float
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
-  orderEmployees OrderEmployee[]
+  employee   Employee? @relation(fields: [employeeId], references: [id])
+  orderTravelers OrderTravelers[]
+  OrderItem OrderItem[]
+}
+
+model OrderItem{
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  quantity  Int
+  price     Float
+  serviceId Int
+  service   service  @relation(fields: [serviceId], references: [id])
+  title     String
+  description String?
+  booking   Booking[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model service{
+  id        Int      @id @default(autoincrement())
+  name_ar      String
+  name_en      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  OrderItem OrderItem[]
 }
 
 
@@ -107,12 +131,12 @@ model Payment{
   updatedAt DateTime @updatedAt
 }
 
-model OrderEmployee {
+model OrderTravelers {
   id        Int      @id @default(autoincrement())
   orderId   Int
   order     Order    @relation(fields: [orderId], references: [id])
-  employeeId Int
-  employee  Employee @relation(fields: [employeeId], references: [id])
+  travelerId Int
+  traveler  Traveler @relation(fields: [travelerId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -161,4 +185,92 @@ enum PaymentMethod {
 CASH
 BANK
 CARD
+}
+
+model Booking {
+  id          Int      @id @default(autoincrement())
+  travelerId  Int
+  traveler    Traveler @relation(fields: [travelerId], references: [id])
+  flightId    Int?
+  flight      Flight?  @relation(fields: [flightId], references: [id])
+  orderItemId     Int?
+  orderItem       OrderItem?  @relation(fields: [orderItemId], references: [id])
+  hotelId     Int?
+  hotel       Hotel?   @relation(fields: [hotelId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+}
+
+model Traveler {
+  id         Int       @id @default(autoincrement())
+  firstName_ar  String
+  lastName_ar   String
+  firstName_en  String
+  lastName_en   String
+  email      String
+  phone      String
+  relationship String
+  passport     String?
+  employeeId   Int?
+  bookings   Booking[]
+  Employee Employee[]
+  OrderTravelers OrderTravelers[]
+}
+
+model Flight {
+  id          Int      @id @default(autoincrement())
+  flightCode  String
+  airlineId   Int
+  airline     Airline   @relation(fields: [airlineId], references: [id])
+  airportId   Int
+  airport     Airport   @relation(fields: [airportId], references: [id])
+  Booking Booking[]
+}
+
+model Hotel {
+  id          Int      @id @default(autoincrement())
+  name        String
+  city        String
+  bookings    Booking[]
+}
+
+
+
+
+
+model Airport {
+  id      Int     @id @default(autoincrement())
+  code    String
+  name    String
+  cityId  Int
+  city    City     @relation(fields: [cityId], references: [id])
+  flights Flight[]
+  countryId Int
+  country Country  @relation(fields: [countryId], references: [id])
+}
+
+model Airline {
+  id        Int     @id @default(autoincrement())
+  iataCode  String
+  name      String
+
+  Flight Flight[]
+}
+
+model Country {
+  id      Int     @id @default(autoincrement())
+  code    String
+  name    String
+  cities  City[]
+  airports Airport[]
+}
+
+model City {
+  id       Int      @id @default(autoincrement())
+  code     String
+  name     String
+  countryId Int
+  airports Airport[]
+  country  Country   @relation(fields: [countryId], references: [id])
 }
