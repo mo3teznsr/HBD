@@ -25,6 +25,7 @@ import { Button, InputAdornment, MenuItem } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { getAirports } from 'src/services/lookups';
 import { getServices } from 'src/services/service';
+import Airport from 'src/components/airportSelect';
 
 export const NewInvoiceSchema = zod
   .object({
@@ -156,6 +157,7 @@ export function OrderNewEditForm({ currentInvoice }) {
 
   return (
     <Form methods={methods}>
+      <Airport  />
         <div className='bg-white p-4 mb-4 rounded-2xl'>
         <div className='flex justify-between items-center gap-8 mb-4'>
 
@@ -163,6 +165,7 @@ export function OrderNewEditForm({ currentInvoice }) {
                 <div  onClick={()=>setParams({isOneWay:true})} className={`px-6 py-4 rounded-full cursor-pointer ${params.isOneWay&&'bg-white'}`}>{t("One Way")}</div>
                 <div onClick={()=>setParams({isOneWay:false})} className={`px-6 py-4 rounded-full cursor-pointer ${!params.isOneWay&&'bg-white'}`}>{t("Round Trip")}</div>
             </div>
+            
 
             <div className='flex-1 flex gap-2'>
                 <Field.Select name="class" label={t("Class")}  onChange={handleChange}>

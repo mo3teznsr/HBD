@@ -25,16 +25,17 @@ export const searchFlights = async ({ origin, destination, departureDate, return
       destinationLocationCode: destination,
       departureDate,
       adults,
-      children,
-      infants,
-      travelClass, // You can make this dynamic
-      ...(returnDate && !oneWay ? { returnDate } : {}),
-      ...(oneWay ? { nonStop: true } : {}),
+      // children,
+      // infants,
+      // travelClass, // You can make this dynamic
+      // ...(returnDate && !oneWay ? { returnDate } : {}),
+      // ...(oneWay ? { nonStop: true } : {}),
       currencyCode
     };
 
     // Call Amadeus API for flight search
-    const response = await amadeus.shopping.flightOffersSearch.get({ Flightparams });
+   // const response = await amadeus.shopping.flightOffersSearch.get({ Flightparams });
+  const response = await amadeus.shopping.flightOffersSearch.get(Flightparams)
 
     // Process the response data as needed
     return response.data;
@@ -84,13 +85,14 @@ export const  manageTraveler=async(data: { firstName_ar: string,
   }
 }
 
-export const getAirports=async()=> {
+export const getAirports=async(keyword:any)=> {
   try {
     const response = await amadeus.referenceData.locations.get({
-      subType: 'AIRPORT',
-      keyword: 'SAR',
+       subType: 'AIRPORT,CITY',
+      keyword,
      
     })
+  
     
 
     // await response.data.map(async(airport:any) => ({
